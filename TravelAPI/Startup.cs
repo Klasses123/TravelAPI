@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TravelAPI.Common.Logger;
 using TravelAPI.Database;
+using TravelAPI.Infrastructure.Interfaces;
+using TravelAPI.Infrastructure.Repositories;
 using TravelAPI.Middleware;
 
 namespace TravelAPI
@@ -27,6 +29,7 @@ namespace TravelAPI
                     b => b.MigrationsAssembly("TravelAPI")));
 
             services.AddSingleton<Common.Interfaces.ILogger, Logger>();
+            services.AddScoped(typeof(IBaseRepository<>), typeof(GenericRepository<>));
 
             services.AddControllers();
         }
