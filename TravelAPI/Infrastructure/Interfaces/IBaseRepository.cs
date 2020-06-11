@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -22,7 +23,7 @@ namespace TravelAPI.Infrastructure.Interfaces
         Task DeleteAsync(T item);
         void Save();
         Task SaveAsync();
-        IEnumerable<T> GetWithInclude(params Expression<Func<T, object>>[] includeProperties);
-        IEnumerable<T> GetWithInclude(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
+        IQueryable<T> GetWithInclude(params Expression<Func<T, object>>[] includeProperties);
+        IQueryable<T> GetWithInclude(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
     }
 }
