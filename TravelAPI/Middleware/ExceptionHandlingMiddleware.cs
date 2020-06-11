@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TravelAPI.Common.Exceptions.ClientExceptions;
 using TravelAPI.Common.Exceptions.ServerExceptions;
 using TravelAPI.Common.Interfaces;
 
@@ -69,17 +70,21 @@ namespace TravelAPI.Middleware
 
         private HttpErrorModel DefineHttpError(Exception exception)
         {
-            switch (exception)
+            return exception switch
             {
-                //TODO add cases and custom exceptions
-                default:
-                    return new HttpErrorModel
-                    {
-                        Details = new HttpErrorModel.ErrorDetails
-                        { Text = "Undefined server error!" },
-                        StatusCode = 500
-                    };
-            }
+                NotFoundException notFoundExc => new HttpErrorModel
+                {
+                    Details = new HttpErrorModel.ErrorDetails
+                    { Text = notFoundExc.Description },
+                    StatusCode = 404
+                },
+                _ => new HttpErrorModel
+                {
+                    Details = new HttpErrorModel.ErrorDetails
+                    { Text = "Undefined server error!" },
+                    StatusCode = 500
+                },
+            };
         }
 
         private class HttpErrorModel

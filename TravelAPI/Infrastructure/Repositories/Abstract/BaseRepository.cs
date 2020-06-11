@@ -54,7 +54,7 @@ namespace TravelAPI.Infrastructure.Repositories.Abstract
             _disposed = true;
         }
 
-        public abstract ICollection<T> GetAll();
+        public abstract IQueryable<T> GetAll();
 
         public abstract T GetById(Guid id);
 
