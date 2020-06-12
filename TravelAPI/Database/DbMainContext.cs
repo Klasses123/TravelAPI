@@ -1,11 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using IdentityServer4.EntityFramework.Options;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using System;
 using TravelAPI.Core.Models;
 
 namespace TravelAPI.Database
 {
-    public class DbMainContext : DbContext
+    public class DbMainContext : ApiAuthorizationDbContext<User>
     {
-        public DbMainContext(DbContextOptions options): base (options)
+        public DbMainContext(DbContextOptions options, IOptions<OperationalStoreOptions> opts): base (options, opts)
         {
             Initialize();
         }

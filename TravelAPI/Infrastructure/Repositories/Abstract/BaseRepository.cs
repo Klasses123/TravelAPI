@@ -60,6 +60,8 @@ namespace TravelAPI.Infrastructure.Repositories.Abstract
 
         public abstract Task<T> GetByIdAsync(Guid id);
 
+        public abstract IQueryable<T> GetAll(Expression<Func<T, bool>> predicate);
+
         public IQueryable<T> GetWithInclude(params Expression<Func<T, object>>[] includeProperties)
         {
             return Include(includeProperties);

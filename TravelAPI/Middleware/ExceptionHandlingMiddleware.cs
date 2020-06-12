@@ -72,11 +72,30 @@ namespace TravelAPI.Middleware
         {
             return exception switch
             {
+                AlreadyExistsException alrExistsExc => new HttpErrorModel
+                {
+                    Details = new HttpErrorModel.ErrorDetails
+                    { 
+                        Text = alrExistsExc.ParamName == null 
+                            ? $"{alrExistsExc.Message} уже существует!" 
+                            : $"{alrExistsExc.Message} с такми {alrExistsExc.ParamName} уже существует!"
+                    },
+                    StatusCode = 400
+                },
                 NotFoundException notFoundExc => new HttpErrorModel
                 {
                     Details = new HttpErrorModel.ErrorDetails
                     { Text = notFoundExc.Description },
                     StatusCode = 404
+                },
+                MissingParametersException missParamsExc => new HttpErrorModel 
+                {
+                    Details = new HttpErrorModel.ErrorDetails
+                    { 
+                        Text = "Необходимо заполнить все поля!", 
+                        Details = missParamsExc.MissingParameters
+                    },
+                    StatusCode = 400
                 },
                 _ => new HttpErrorModel
                 {

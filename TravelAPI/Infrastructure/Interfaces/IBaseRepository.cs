@@ -9,6 +9,7 @@ namespace TravelAPI.Infrastructure.Interfaces
     public interface IBaseRepository<T> : IDisposable where T : class
     {
         IQueryable<T> GetAll();
+        IQueryable<T> GetAll(Expression<Func<T, bool>> predicate);
         T GetById(Guid id);
         Task<T> GetByIdAsync(Guid id);
         T Create(T item);

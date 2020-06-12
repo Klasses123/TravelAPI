@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 using TravelAPI.Infrastructure.Interfaces;
 
 namespace TravelAPI.Core.Models
 {
     [Table("Users")]
-    public sealed class User : IDataModel
+    public sealed class User : IdentityUser, IDataModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public override string Id { get; set; }
         [Required]
         public string Login { get; set; }
+        [Required]
+        public override string Email { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]
@@ -22,7 +22,6 @@ namespace TravelAPI.Core.Models
         public DateTime RegisteredOn { get; set; }
         public string RefreshToken { get; set; }
         public Company Company { get; set; }
-
 
         public override bool Equals(object obj)
         {

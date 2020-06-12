@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using TravelAPI.Common.Exceptions.ClientExceptions;
 using TravelAPI.Database;
@@ -22,6 +23,11 @@ namespace TravelAPI.Infrastructure.Repositories
         public override IQueryable<TEntity> GetAll()
         {
             return DbEntities.AsNoTracking();
+        }
+
+        public override IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbEntities.Where(predicate).AsNoTracking();
         }
 
         public override TEntity GetById(Guid id)
