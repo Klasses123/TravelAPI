@@ -9,12 +9,14 @@ using TravelAPI.Common.Exceptions.ClientExceptions;
 using TravelAPI.Core.Models;
 using TravelAPI.Infrastructure.Interfaces;
 using TravelAPI.Services.Interfaces;
+using TravelAPI.ViewModels.ResponseModels;
 
 namespace TravelAPI.Services.Realizations
 {
     public class UserService : UserManager<User>, IUserService<User>
     {
-        public IBaseRepository<User> UserRepository { get; }
+        private IBaseRepository<User> UserRepository { get; }
+        private SignInManager<User> SignInManager { get; }
         public UserService(
             //For base class
             IUserStore<User> store,
@@ -27,10 +29,12 @@ namespace TravelAPI.Services.Realizations
             IServiceProvider services,
             ILogger<UserManager<User>> logger,
             //End for base class
+            SignInManager<User> signInManager,
             IBaseRepository<User> userRepository)
             : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
             UserRepository = userRepository;
+            SignInManager = signInManager;
         }
 
         public Task DeleteUserAsync(Guid id)
@@ -43,27 +47,18 @@ namespace TravelAPI.Services.Realizations
             throw new NotImplementedException();
         }
 
-        public async Task RegisterAsync(User user, string password)
+        public async Task<RegisterUserResponse> RegisterAsync(User user, string password)
         {
-            if (string.IsNullOrEmpty(user.Email) 
-                || string.IsNullOrEmpty(user.Login)
-                || string.IsNullOrEmpty(user.FirstName)
-                || string.IsNullOrEmpty(user.LastName))
-            {
-                throw new MissingParametersException(new List<string>
-                {
-                    string.IsNullOrEmpty(user.Email) ? "E-mail" : "",
-                    string.IsNullOrEmpty(user.Login) ? "Логин" : "",
-                    string.IsNullOrEmpty(user.FirstName) ? "Имя" : "",
-                    string.IsNullOrEmpty(user.LastName) ? "Фамилия" : ""
-                }.Where(i => !string.IsNullOrEmpty(i)).ToList());
-            }
-
-            var u = UserRepository.GetAll(u => u.Login == user.Login).FirstOrDefault();
+            //TODO: add user phone number and date of register
+            var u = UserRepository.GetAll(u => u.UserName == user.UserName).FirstOrDefault();
             if (u != null)
                 throw new AlreadyExistsException("Пользователь", "логином");
 
             var result = await CreateAsync(user, password);
+            if (!result.Succeeded)
+                throw new IdentityUserException(result);
+
+            return new RegisterUserResponse();
         }
     }
 }

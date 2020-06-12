@@ -47,28 +47,40 @@ namespace TravelAPI
                 options.UseSqlServer(Configuration.GetConnectionString("MainEntities"),
                     b => b.MigrationsAssembly("TravelAPI")));
 
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddSingleton<Common.Interfaces.ILogger, Logger>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUserService<User>, UserService>();
 
             services.AddAutoMapper(typeof(Startup));
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.WithOrigins(Configuration.GetValue<string>("angularLocalPath"))
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    });
+            });
             services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = 8;
                 options.User.RequireUniqueEmail = true;
                 options.User.AllowedUserNameCharacters =
-                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/";
+                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._";
+            }).AddEntityFrameworkStores<DbMainContext>().AddDefaultTokenProviders();
 
-            }).AddDefaultTokenProviders().AddEntityFrameworkStores<DbMainContext>();
+            services.AddHttpContextAccessor();
             services.AddIdentityServer()
                 .AddApiAuthorization<User, DbMainContext>();
             services.AddAuthentication(o =>
             {
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddIdentityServerJwt()
+            })  .AddIdentityServerJwt()
                 .AddJwtBearer(options =>
                 {
                     options.RequireHttpsMetadata = _isProdMode;
@@ -111,23 +123,11 @@ namespace TravelAPI
                     };
                 });
 
-            services.AddHttpContextAccessor();
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                    builder => 
-                    {
-                        builder.WithOrigins(Configuration.GetValue<string>("angularLocalPath"))
-                            .AllowAnyHeader()
-                            .AllowAnyMethod()
-                            .AllowCredentials();
-                    });
-            });
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddMvc().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IUrlHelper>(serviceProvider =>
             {
                 var actionContext = serviceProvider.GetRequiredService<IActionContextAccessor>().ActionContext;
@@ -141,15 +141,17 @@ namespace TravelAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                //TODO: add DB relevance check
             }
 
             app.UseCors(MyAllowSpecificOrigins);
             app.UseHttpsRedirection();
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
-
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseIdentityServer();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

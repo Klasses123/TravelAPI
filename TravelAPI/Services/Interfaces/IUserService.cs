@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TravelAPI.Core.Models;
+using TravelAPI.ViewModels.ResponseModels;
 
 namespace TravelAPI.Services.Interfaces
 {
     public interface IUserService<TUser> where TUser : class
     {
-
         Task<IdentityResult> AddLoginAsync(TUser user, UserLoginInfo login); Task<IdentityResult> AddPasswordAsync(TUser user, string password);
         Task<IdentityResult> AddToRoleAsync(TUser user, string role);
         Task<IdentityResult> AddToRolesAsync(TUser user, IEnumerable<string> roles);
@@ -48,7 +48,6 @@ namespace TravelAPI.Services.Interfaces
         Task<IList<string>> GetRolesAsync(TUser user);
         Task<string> GetSecurityStampAsync(TUser user);
         Task<bool> GetTwoFactorEnabledAsync(TUser user);
-        Task<TUser> GetUserAsync(ClaimsPrincipal principal);
         string GetUserId(ClaimsPrincipal principal);
         Task<string> GetUserIdAsync(TUser user);
         string GetUserName(ClaimsPrincipal principal);
@@ -90,8 +89,9 @@ namespace TravelAPI.Services.Interfaces
         Task<bool> VerifyChangePhoneNumberTokenAsync(TUser user, string token, string phoneNumber);
         Task<bool> VerifyTwoFactorTokenAsync(TUser user, string tokenProvider, string token);
         Task<bool> VerifyUserTokenAsync(TUser user, string tokenProvider, string purpose, string token);
-        Task RegisterAsync(User user, string password);
+        Task<RegisterUserResponse> RegisterAsync(TUser user, string password);
         Task DeleteUserAsync(Guid id);
         Task GetUserAsync(Guid id);
+        Task<TUser> GetUserAsync(ClaimsPrincipal principal);
     }
 }

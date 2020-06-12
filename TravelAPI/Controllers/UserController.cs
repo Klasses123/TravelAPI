@@ -31,14 +31,11 @@ namespace TravelAPI.Controllers
             if (request == null)
                 throw new MissingParametersException(
                     new List<string> { $"Запрос на создание пользователя не может быть пустым" });
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var user = Mapper.Map<CreateUserRequest, User>(request);
-            await UserService.RegisterAsync(user, request.Password);
-
-            return new JsonResult("" /*TODO return login result*/);
+            return new JsonResult(await UserService.RegisterAsync(user, request.Password));
         }
 
         [HttpGet("/user/get")]

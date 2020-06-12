@@ -12,8 +12,6 @@ namespace TravelAPI.Core.Models
         [Key]
         public override string Id { get; set; }
         [Required]
-        public string Login { get; set; }
-        [Required]
         public override string Email { get; set; }
         [Required]
         public string FirstName { get; set; }

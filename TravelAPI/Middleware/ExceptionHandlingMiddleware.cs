@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TravelAPI.Common.Exceptions.ClientExceptions;
 using TravelAPI.Common.Exceptions.ServerExceptions;
@@ -72,6 +71,16 @@ namespace TravelAPI.Middleware
         {
             return exception switch
             {
+                IdentityUserException identityUserExc => new HttpErrorModel
+                {
+                    Details = new HttpErrorModel.ErrorDetails
+                    {
+                        Text = identityUserExc.Description,
+                        Details = identityUserExc.Errors
+                    },
+                    StatusCode = 409,
+                    NeedToLog = Regex.Matches(identityUserExc.Description, @"\p{IsBasicLatin}").Count > 0
+                },
                 AlreadyExistsException alrExistsExc => new HttpErrorModel
                 {
                     Details = new HttpErrorModel.ErrorDetails
@@ -100,7 +109,7 @@ namespace TravelAPI.Middleware
                 _ => new HttpErrorModel
                 {
                     Details = new HttpErrorModel.ErrorDetails
-                    { Text = "Undefined server error!" },
+                    { Text = "Неопределенная ошибка сервера!" },
                     StatusCode = 500
                 },
             };
