@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -11,6 +12,7 @@ using TravelAPI.Core.Models;
 using TravelAPI.Infrastructure.Interfaces;
 using TravelAPI.Infrastructure.Security;
 using TravelAPI.Services.Interfaces;
+using TravelAPI.ViewModels;
 using TravelAPI.ViewModels.RequestModels;
 using TravelAPI.ViewModels.ResponseModels;
 
@@ -20,6 +22,7 @@ namespace TravelAPI.Services.Realizations
     {
         private IBaseRepository<User> UserRepository { get; }
         private SignInManager<User> SignInManager { get; }
+        private IMapper Mapper { get; }
         public UserService(
             //For base class
             IUserStore<User> store,
@@ -33,11 +36,13 @@ namespace TravelAPI.Services.Realizations
             ILogger<UserManager<User>> logger,
             //End for base class
             SignInManager<User> signInManager,
-            IBaseRepository<User> userRepository)
+            IBaseRepository<User> userRepository,
+            IMapper mapper)
             : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
             UserRepository = userRepository;
             SignInManager = signInManager;
+            Mapper = mapper;
         }
 
         public async Task<bool> DeleteUserAsync(string id)
@@ -149,7 +154,8 @@ namespace TravelAPI.Services.Realizations
             var response = new SignInResponse
             {
                 RefreshToken = Guid.NewGuid().ToString(),
-                Token = claims.GenerateJwtToken()
+                Token = claims.GenerateJwtToken(),
+                User = Mapper.Map<UserViewModel>(user)
             };
             user.RefreshToken = response.RefreshToken;
             await UpdateRefreshTokenAsync(user);
