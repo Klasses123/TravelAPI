@@ -58,7 +58,11 @@ namespace TravelAPI.Infrastructure.Repositories.Abstract
 
         public abstract T GetById(Guid id);
 
+        public abstract T GetById(string id);
+
         public abstract Task<T> GetByIdAsync(Guid id);
+
+        public abstract Task<T> GetByIdAsync(string id);
 
         public abstract IQueryable<T> GetAll(Expression<Func<T, bool>> predicate);
 

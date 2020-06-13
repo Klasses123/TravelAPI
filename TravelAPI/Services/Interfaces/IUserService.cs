@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TravelAPI.Core.Models;
+using TravelAPI.ViewModels.RequestModels;
 using TravelAPI.ViewModels.ResponseModels;
 
 namespace TravelAPI.Services.Interfaces
@@ -90,8 +91,11 @@ namespace TravelAPI.Services.Interfaces
         Task<bool> VerifyTwoFactorTokenAsync(TUser user, string tokenProvider, string token);
         Task<bool> VerifyUserTokenAsync(TUser user, string tokenProvider, string purpose, string token);
         Task<RegisterUserResponse> RegisterAsync(TUser user, string password);
-        Task DeleteUserAsync(Guid id);
-        Task GetUserAsync(Guid id);
+        Task<bool> DeleteUserAsync(string id);
+        Task<TUser> GetUserAsync(string id);
         Task<TUser> GetUserAsync(ClaimsPrincipal principal);
+        Task<bool> UpdateEmailAsync(UpdateEmailRequest request);
+        Task<bool> UpdatePasswordAsync(UpdatePasswordRequest request);
+        Task<TUser> UpdateNameAsync(UpdateNameRequest request);
     }
 }

@@ -11,7 +11,9 @@ namespace TravelAPI.Infrastructure.Interfaces
         IQueryable<T> GetAll();
         IQueryable<T> GetAll(Expression<Func<T, bool>> predicate);
         T GetById(Guid id);
+        T GetById(string id);
         Task<T> GetByIdAsync(Guid id);
+        Task<T> GetByIdAsync(string id);
         T Create(T item);
         Task<T> CreateAsync(T item);
         void CreateRange(IEnumerable<T> items);

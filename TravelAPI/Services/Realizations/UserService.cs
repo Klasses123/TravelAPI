@@ -9,6 +9,7 @@ using TravelAPI.Common.Exceptions.ClientExceptions;
 using TravelAPI.Core.Models;
 using TravelAPI.Infrastructure.Interfaces;
 using TravelAPI.Services.Interfaces;
+using TravelAPI.ViewModels.RequestModels;
 using TravelAPI.ViewModels.ResponseModels;
 
 namespace TravelAPI.Services.Realizations
@@ -37,28 +38,79 @@ namespace TravelAPI.Services.Realizations
             SignInManager = signInManager;
         }
 
-        public Task DeleteUserAsync(Guid id)
+        public async Task<bool> DeleteUserAsync(string id)
         {
-            throw new NotImplementedException();
+            var user = await UserRepository.GetByIdAsync(id);
+            if (user == null)
+                throw new NotFoundException("Пользователь не найден!");
+
+            var result = await DeleteAsync(user);
+            if (!result.Succeeded)
+                throw new IdentityUserException(result);
+
+            return result.Succeeded;
         }
 
-        public Task GetUserAsync(Guid id)
+        public async Task<User> GetUserAsync(string id)
         {
-            throw new NotImplementedException();
+            var user = await UserRepository.GetByIdAsync(id);
+            if (user == null)
+                throw new NotFoundException("Пользователь не найден!");
+
+            return user;
         }
 
         public async Task<RegisterUserResponse> RegisterAsync(User user, string password)
         {
-            //TODO: add user phone number and date of register
             var u = UserRepository.GetAll(u => u.UserName == user.UserName).FirstOrDefault();
             if (u != null)
                 throw new AlreadyExistsException("Пользователь", "логином");
+
+            user.RegisteredOn = DateTime.Now;
 
             var result = await CreateAsync(user, password);
             if (!result.Succeeded)
                 throw new IdentityUserException(result);
 
             return new RegisterUserResponse();
+        }
+
+        public async Task<bool> UpdateEmailAsync(UpdateEmailRequest request)
+        {
+            var user = await UserRepository.GetByIdAsync(request.Id);
+            if (user == null)
+                throw new NotFoundException("Пользователь не найден");
+
+            var result = await ChangeEmailAsync(user, request.NewEmail, request.Token);
+            if (!result.Succeeded)
+                throw new IdentityUserException(result);
+
+            return result.Succeeded;
+        }
+
+        public async Task<bool> UpdatePasswordAsync(UpdatePasswordRequest request)
+        {
+            var user = await UserRepository.GetByIdAsync(request.Id);
+            if (user == null)
+                throw new NotFoundException("Пользователь не найден!");
+
+            var result = await ResetPasswordAsync(user, request.Token, request.Password);
+            if (!result.Succeeded)
+                throw new IdentityUserException(result);
+
+            return result.Succeeded;
+        }
+
+        public async Task<User> UpdateNameAsync(UpdateNameRequest request)
+        {
+            var user = await UserRepository.GetByIdAsync(request.Id);
+            if (user == null)
+                throw new NotFoundException("Пользователь не найден");
+
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
+
+            return await UserRepository.UpdateAsync(user);
         }
     }
 }

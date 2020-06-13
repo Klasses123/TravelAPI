@@ -36,7 +36,19 @@ namespace TravelAPI.Infrastructure.Repositories
             return result;
         }
 
+        public override TEntity GetById(string id)
+        {
+            var result = DbEntities.Find(id);
+            return result;
+        }
+
         public override async Task<TEntity> GetByIdAsync(Guid id)
+        {
+            var result = await DbEntities.FindAsync(id);
+            return result;
+        }
+
+        public override async Task<TEntity> GetByIdAsync(string id)
         {
             var result = await DbEntities.FindAsync(id);
             return result;
@@ -90,7 +102,7 @@ namespace TravelAPI.Infrastructure.Repositories
 
         public async override Task<TEntity> UpdateAsync(TEntity item)
         {
-            return await Task.Run(() => UpdateAsync(item));
+            return await Task.Run(() => Update(item));
         }
     }
 }
