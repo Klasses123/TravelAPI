@@ -24,11 +24,14 @@ namespace TravelAPI.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasOne(u => u.Company).WithMany(c => c.CompanyUsers);
+            modelBuilder.Entity<User>().HasMany(u => u.Roles).WithOne(r => r.User);
 
             modelBuilder.Entity<Company>().HasOne(c => c.Owner);
             modelBuilder.Entity<Company>().HasMany(c => c.Travels).WithOne(t => t.CompanyOrganizer);
 
             modelBuilder.Entity<Travel>();
+
+            modelBuilder.Entity<CompanyRole>().HasMany(c => c.Users);
 
             base.OnModelCreating(modelBuilder);
         }

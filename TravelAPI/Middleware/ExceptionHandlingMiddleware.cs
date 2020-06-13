@@ -71,6 +71,12 @@ namespace TravelAPI.Middleware
         {
             return exception switch
             {
+                SignInException _ => new HttpErrorModel
+                {
+                    Details = new HttpErrorModel.ErrorDetails
+                    { Text= "Неверный логин / пароль!"},
+                    StatusCode = 400
+                },
                 IdentityUserException identityUserExc => new HttpErrorModel
                 {
                     Details = new HttpErrorModel.ErrorDetails

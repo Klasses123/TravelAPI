@@ -54,8 +54,6 @@ namespace TravelAPI.Infrastructure.Repositories.Abstract
             _disposed = true;
         }
 
-        public abstract IQueryable<T> GetAll();
-
         public abstract T GetById(Guid id);
 
         public abstract T GetById(string id);
@@ -65,6 +63,9 @@ namespace TravelAPI.Infrastructure.Repositories.Abstract
         public abstract Task<T> GetByIdAsync(string id);
 
         public abstract IQueryable<T> GetAll(Expression<Func<T, bool>> predicate);
+
+        public abstract IQueryable<T> GetAll();
+        public abstract Task<IQueryable<T>> GetAllAsync(Expression<Func<T, bool>> predicate);
 
         public IQueryable<T> GetWithInclude(params Expression<Func<T, object>>[] includeProperties)
         {

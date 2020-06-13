@@ -30,6 +30,11 @@ namespace TravelAPI.Infrastructure.Repositories
             return DbEntities.Where(predicate).AsNoTracking();
         }
 
+        public async override Task<IQueryable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await Task.Run(() => GetAll(predicate));
+        }
+
         public override TEntity GetById(Guid id)
         {
             var result = DbEntities.Find(id);

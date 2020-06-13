@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TravelAPI.Infrastructure.Interfaces;
@@ -7,7 +8,7 @@ using TravelAPI.Infrastructure.Interfaces;
 namespace TravelAPI.Core.Models
 {
     [Table("Users")]
-    public sealed class User : IdentityUser, IDataModel
+    public class User : IdentityUser, IDataModel
     {
         [Key]
         public override string Id { get; set; }
@@ -20,6 +21,7 @@ namespace TravelAPI.Core.Models
         public DateTime RegisteredOn { get; set; }
         public string RefreshToken { get; set; }
         public Company Company { get; set; }
+        public virtual ICollection<UserCompanyRole> Roles { get; set; }
 
         public override bool Equals(object obj)
         {

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using TravelAPI.Core.Models;
 using TravelAPI.ViewModels.RequestModels;
 using TravelAPI.ViewModels.ResponseModels;
 
@@ -97,5 +96,6 @@ namespace TravelAPI.Services.Interfaces
         Task<bool> UpdateEmailAsync(UpdateEmailRequest request);
         Task<bool> UpdatePasswordAsync(UpdatePasswordRequest request);
         Task<TUser> UpdateNameAsync(UpdateNameRequest request);
+        Task<SignInResponse> SignInAsync(string userName, string password);
     }
 }
