@@ -7,7 +7,7 @@ namespace TravelAPI.Infrastructure.Security
     {
         public const string ISSUER = "Klasses"; // издатель токена
         public const string AUDIENCE = "Client"; // потребитель токена
-        const string KEY = "010203Qwe@";   // ключ для шифрации
+        const string KEY = "010203Qwe@kk#$%^!@";   // ключ для шифрации
         public const int LIFETIME = 60; // время жизни токена - 60 минута
         public static SecurityKey GetSymmetricSecurityKey()
         {

@@ -14,10 +14,12 @@ namespace TravelAPI.Infrastructure.Repositories
     public class GenericRepository<TEntity>: BaseRepository<TEntity> where TEntity : class, IDataModel
     {
         protected override DbSet<TEntity> DbEntities { get; }
+        protected DbMainContext Context { get; }
 
         public GenericRepository(DbMainContext context) : base(context)
         {
             DbEntities = context.Set<TEntity>();
+            Context = context;
         }
 
         public override IQueryable<TEntity> GetAll()
@@ -79,7 +81,9 @@ namespace TravelAPI.Infrastructure.Repositories
 
         public override TEntity Update(TEntity item)
         {
-            return DbEntities.Update(item).Entity;
+            var updatedItem = DbEntities.Update(item);
+            Context.SaveChanges();
+            return updatedItem.Entity;
         }
 
         public override void Delete(Guid id)

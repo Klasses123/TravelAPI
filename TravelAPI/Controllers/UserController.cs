@@ -40,14 +40,14 @@ namespace TravelAPI.Controllers
             return new JsonResult(await UserService.RegisterAsync(user, request.Password));
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("/user/get/{id}")]
         public async Task<ActionResult<string>> Get(string id)
         {
             return new JsonResult(await UserService.GetUserAsync(id));
         }
 
-        [HttpPost]
-        public async Task<ActionResult<string>> Delete([FromBody] string id)
+        [HttpDelete("/user/delete/{id}")]
+        public async Task<ActionResult<string>> Delete(string id)
         {
             return new JsonResult(await UserService.DeleteUserAsync(id));
         }

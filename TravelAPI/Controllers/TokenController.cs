@@ -10,6 +10,7 @@ using TravelAPI.ViewModels.RequestModels;
 
 namespace TravelAPI.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
     public class TokenController : ControllerBase
     {
@@ -21,7 +22,7 @@ namespace TravelAPI.Controllers
             UserService = userService;
         }
 
-        [HttpPost]
+        [HttpPost("/Login")]
         public async Task<ActionResult<string>> Login([FromBody] LoginUserRequest request)
         {
             if (!ModelState.IsValid)
