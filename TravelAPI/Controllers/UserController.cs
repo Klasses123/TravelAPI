@@ -56,7 +56,7 @@ namespace TravelAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<string>> UpdateEmail([FromBody] UpdateEmailRequest request)
         {
             if (!ModelState.IsValid)
@@ -68,7 +68,7 @@ namespace TravelAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<string>> UpdatePassword([FromBody] UpdatePasswordRequest request)
         {
             if (!ModelState.IsValid)
@@ -80,7 +80,7 @@ namespace TravelAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<string>> UpdateName([FromBody] UpdateNameRequest request)
         {
             if (!ModelState.IsValid)

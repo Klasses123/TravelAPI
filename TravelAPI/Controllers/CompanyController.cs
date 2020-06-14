@@ -44,7 +44,7 @@ namespace TravelAPI.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<string>> Delete(Guid id)
         {
             return new JsonResult(
@@ -52,7 +52,7 @@ namespace TravelAPI.Controllers
         }
 
         [HttpPost("update")]
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<string>> Update([FromBody] UpdateCompanyRequest request)
         {
             if (!ModelState.IsValid)
