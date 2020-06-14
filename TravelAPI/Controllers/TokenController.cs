@@ -19,7 +19,7 @@ namespace TravelAPI.Controllers
             UserService = userService;
         }
 
-        [HttpPost("/Login")]
+        [HttpPost("Login")]
         public async Task<ActionResult<string>> Login([FromBody] LoginUserRequest request)
         {
             if (!ModelState.IsValid)
@@ -27,5 +27,7 @@ namespace TravelAPI.Controllers
 
             return new JsonResult(await UserService.SignInAsync(request.UserName, request.Password));
         }
+
+        //TODO: add refresh token method
     }
 }

@@ -24,7 +24,7 @@ namespace TravelAPI.Controllers
             Mapper = mapper;
         }
 
-        [HttpPost("/user/create")]
+        [HttpPost("create")]
         public async Task<ActionResult<string>> Post([FromBody] CreateUserRequest request)
         {
             if (request == null)
@@ -33,20 +33,26 @@ namespace TravelAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var user = Mapper.Map<CreateUserRequest, User>(request);
-            return new JsonResult(await UserService.RegisterAsync(user, request.Password));
+            return new JsonResult(
+                Mapper.Map<UserViewModel>(
+                    await UserService.RegisterAsync(
+                        Mapper.Map<CreateUserRequest, User>(request), request.Password)));
         }
 
-        [HttpGet("/user/get/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<string>> Get(string id)
         {
-            return new JsonResult(Mapper.Map<UserViewModel>(await UserService.GetUserAsync(id)));
+            return new JsonResult(
+                Mapper.Map<UserViewModel>(
+                    await UserService.GetUserAsync(id)));
         }
 
-        [HttpDelete("/user/delete/{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<ActionResult<string>> Delete(string id)
         {
-            return new JsonResult(Mapper.Map<UserViewModel>(await UserService.DeleteUserAsync(id)));
+            return new JsonResult(
+                Mapper.Map<UserViewModel>(
+                    await UserService.DeleteUserAsync(id)));
         }
 
         [HttpPost]
@@ -56,7 +62,9 @@ namespace TravelAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return new JsonResult(Mapper.Map<UserViewModel>(await UserService.UpdateEmailAsync(request)));
+            return new JsonResult(
+                Mapper.Map<UserViewModel>(
+                    await UserService.UpdateEmailAsync(request)));
         }
 
         [HttpPost]
@@ -66,7 +74,9 @@ namespace TravelAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return new JsonResult(Mapper.Map<UserViewModel>(await UserService.UpdatePasswordAsync(request)));
+            return new JsonResult(
+                Mapper.Map<UserViewModel>(
+                    await UserService.UpdatePasswordAsync(request)));
         }
 
         [HttpPost]
@@ -76,7 +86,9 @@ namespace TravelAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return new JsonResult(Mapper.Map<UserViewModel>(await UserService.UpdateNameAsync(request)));
+            return new JsonResult(
+                Mapper.Map<UserViewModel>(
+                    await UserService.UpdateNameAsync(request)));
         }
     }
 }
