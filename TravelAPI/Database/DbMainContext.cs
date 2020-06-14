@@ -29,7 +29,9 @@ namespace TravelAPI.Database
             modelBuilder.Entity<Company>().HasOne(c => c.Owner);
             modelBuilder.Entity<Company>().HasMany(c => c.Travels).WithOne(t => t.CompanyOrganizer);
 
-            modelBuilder.Entity<Travel>();
+            modelBuilder.Entity<Travel>().HasOne(t => t.Region).WithMany(r => r.Travels);
+
+            modelBuilder.Entity<Region>().HasMany(r => r.Towns).WithOne(t => t.Region);
 
             modelBuilder.Entity<CompanyRole>().HasMany(c => c.Users);
 

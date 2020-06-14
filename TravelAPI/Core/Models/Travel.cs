@@ -14,7 +14,7 @@ namespace TravelAPI.Core.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public Company CompanyOrganizer { get; set; }
-
+        public Region Region { get; set; }
         public override string ToString()
         {
             return Name;
