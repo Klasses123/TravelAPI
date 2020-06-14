@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TravelAPI.Core.Models;
-using TravelAPI.Infrastructure.Interfaces;
+using TravelAPI.Services.Interfaces;
 using TravelAPI.ViewModels;
 using TravelAPI.ViewModels.RequestModels;
 
@@ -16,15 +15,15 @@ namespace TravelAPI.Controllers
     public class CompanyController : ControllerBase
     {
         private IMapper Mapper { get; }
-        private IBaseRepository<Company> CompanyRepository { get; }
+        private ICompanyService CompanyService { get; }
         
-        public CompanyController(IMapper mapper, IBaseRepository<Company> companyRepository)
+        public CompanyController(IMapper mapper, ICompanyService companyService)
         {
             Mapper = mapper;
-            CompanyRepository = companyRepository;
+            CompanyService = companyService;
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<ActionResult<string>> Post([FromBody] CreateCompanyRequest request)
         {
             if (!ModelState.IsValid)
@@ -32,7 +31,36 @@ namespace TravelAPI.Controllers
 
             return new JsonResult(
                 Mapper.Map<CompanyViewModel>(
-                    await CompanyRepository.CreateAsync(
+                    await CompanyService.CreateCompanyAsync(
+                        Mapper.Map<Company>(request))));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<string>> Get(Guid id)
+        {
+            return new JsonResult(
+                Mapper.Map<CompanyViewModel>(
+                    await CompanyService.GetCompanyByIdAsync(id)));
+        }
+
+        [HttpDelete("delete/{id}")]
+        [Authorize]
+        public async Task<ActionResult<string>> Delete(Guid id)
+        {
+            return new JsonResult(
+                await CompanyService.DeleteCompanyAsync(id));
+        }
+
+        [HttpPost("update")]
+        [Authorize]
+        public async Task<ActionResult<string>> Update([FromBody] UpdateCompanyRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+               
+            return new JsonResult(
+                Mapper.Map<CompanyViewModel>(
+                    await CompanyService.UpdateCompanyAsync(
                         Mapper.Map<Company>(request))));
         }
     }

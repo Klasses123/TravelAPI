@@ -23,6 +23,13 @@ namespace TravelAPI.Common.Mapper
                 .ForMember(set => set.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
                 .ForMember(set => set.Id, opt => opt.MapFrom(src => src.Id))
                 .IncludeAllDerived();
+
+            CreateMap<UpdateCompanyRequest, Company>()
+                .ForMember(set => set.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(set => set.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(set => set.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
+                .ForMember(set => set.Id, opt => opt.MapFrom(src => src.Id))
+                .IncludeAllDerived();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace TravelAPI.Infrastructure.Interfaces
         Task CreateRangeAsync(IEnumerable<T> items);
         T Update(T item);
         Task<T> UpdateAsync(T item);
-        void Delete(Guid id);
+        bool Delete(Guid id);
         void Delete(T item);
         Task DeleteAsync(Guid id);
         Task DeleteAsync(T item);

@@ -52,6 +52,7 @@ namespace TravelAPI
             services.AddSingleton<Common.Interfaces.ILogger, Logger>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUserService<User>, UserService>();
+            services.AddScoped<ICompanyService, CompanyService>();
 
             services.AddAutoMapper(typeof(Startup));
 

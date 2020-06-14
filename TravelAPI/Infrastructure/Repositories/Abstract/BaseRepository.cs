@@ -28,7 +28,7 @@ namespace TravelAPI.Infrastructure.Repositories.Abstract
 
         public abstract Task CreateRangeAsync(IEnumerable<T> items);
 
-        public abstract void Delete(Guid id);
+        public abstract bool Delete(Guid id);
 
         public abstract void Delete(T item);
 

@@ -39,26 +39,22 @@ namespace TravelAPI.Infrastructure.Repositories
 
         public override TEntity GetById(Guid id)
         {
-            var result = DbEntities.Find(id);
-            return result;
+            return DbEntities.Find(id);
         }
 
         public override TEntity GetById(string id)
         {
-            var result = DbEntities.Find(id);
-            return result;
+            return DbEntities.Find(id);
         }
 
         public override async Task<TEntity> GetByIdAsync(Guid id)
         {
-            var result = await DbEntities.FindAsync(id);
-            return result;
+            return await DbEntities.FindAsync(id);
         }
 
         public override async Task<TEntity> GetByIdAsync(string id)
         {
-            var result = await DbEntities.FindAsync(id);
-            return result;
+            return await DbEntities.FindAsync(id);
         }
 
         public override TEntity Create(TEntity item)
@@ -86,12 +82,13 @@ namespace TravelAPI.Infrastructure.Repositories
             return updatedItem.Entity;
         }
 
-        public override void Delete(Guid id)
+        public override bool Delete(Guid id)
         {
             var item = GetById(id);
             if (item == null)
-                throw new NotFoundException("Не удалось удалить объект, т.к. он не был найден!");
+                return false;
             Delete(item);
+            return true;
         }
 
         public override void Delete(TEntity item)
