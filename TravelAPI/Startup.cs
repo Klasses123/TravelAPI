@@ -53,6 +53,7 @@ namespace TravelAPI
             services.AddScoped(typeof(IBaseRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUserService<User>, UserService>();
             services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<ITravelService, TravelService>();
 
             services.AddAutoMapper(typeof(Startup));
 
