@@ -136,6 +136,7 @@ namespace TravelAPI
                 var actionContext = serviceProvider.GetRequiredService<IActionContextAccessor>().ActionContext;
                 return serviceProvider.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(actionContext);
             });
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

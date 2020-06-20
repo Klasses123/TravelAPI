@@ -8,7 +8,7 @@ namespace TravelAPI.ViewModels
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string UserName { get; set; }
+        public string Login { get; set; }
         public DateTime RegisterOn { get; set; }
         public CompanyViewModel Company { get;set; }
     }

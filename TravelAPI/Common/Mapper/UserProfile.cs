@@ -18,7 +18,7 @@ namespace TravelAPI.Common.Mapper
                 .IncludeAllDerived();
 
             CreateMap<User, UserViewModel>()
-                .ForMember(set => set.UserName, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(set => set.Login, opt => opt.MapFrom(src => src.UserName))
                 .ForMember(set => set.FirstName, opt => opt.MapFrom(src => src.FirstName))
                 .ForMember(set => set.LastName, opt => opt.MapFrom(src => src.LastName))
                 .ForMember(set => set.RegisterOn, opt => opt.MapFrom(src => src.RegisteredOn))
