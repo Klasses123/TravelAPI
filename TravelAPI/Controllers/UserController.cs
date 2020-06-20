@@ -34,9 +34,8 @@ namespace TravelAPI.Controllers
                 return BadRequest(ModelState);
 
             return new JsonResult(
-                Mapper.Map<UserViewModel>(
-                    await UserService.RegisterAsync(
-                        Mapper.Map<CreateUserRequest, User>(request), request.Password)));
+                await UserService.RegisterAsync(
+                    Mapper.Map<CreateUserRequest, User>(request), request.Password));
         }
 
         [HttpGet("{id}")]
