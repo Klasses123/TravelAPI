@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using TravelAPI.Common.Exceptions.ClientExceptions;
 using TravelAPI.Database;
 using TravelAPI.Infrastructure.Interfaces;
 using TravelAPI.Infrastructure.Repositories.Abstract;

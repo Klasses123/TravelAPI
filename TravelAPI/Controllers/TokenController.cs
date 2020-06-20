@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using TravelAPI.Core.Models;
 using TravelAPI.Services.Interfaces;
@@ -28,6 +29,10 @@ namespace TravelAPI.Controllers
             return new JsonResult(await UserService.SignInAsync(request.UserName, request.Password));
         }
 
-        //TODO: add refresh token method
+        [HttpGet("Refresh/{refreshToken}")]
+        public async Task<ActionResult<string>> RefreshToken(string refreshToken)
+        {
+            return new JsonResult(await UserService.RefreshToken(refreshToken));
+        }
     }
 }

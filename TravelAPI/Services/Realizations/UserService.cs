@@ -147,6 +147,20 @@ namespace TravelAPI.Services.Realizations
             return await GenerateToken(user);
         }
 
+        public async Task<RefreshTokenResponse> RefreshToken(string refreshToken)
+        {
+            var user = UserRepository.GetAll(u => u.RefreshToken == refreshToken).FirstOrDefault();
+            if (user == null)
+                throw new NotFoundException("Пользователь не найден! Попробуйте перезайти в учетную запись!");
+
+            var generateTokenResult = await GenerateToken(user);
+            return new RefreshTokenResponse
+            {
+                Token = generateTokenResult.Token,
+                RefreshToken = generateTokenResult.RefreshToken
+            };
+        }
+
         private async Task<SignInResponse> GenerateToken(User user)
         {
             var claims = GetIdentity(user);

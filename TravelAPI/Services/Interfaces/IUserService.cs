@@ -97,5 +97,6 @@ namespace TravelAPI.Services.Interfaces
         Task<bool> UpdatePasswordAsync(UpdatePasswordRequest request);
         Task<TUser> UpdateNameAsync(UpdateNameRequest request);
         Task<SignInResponse> SignInAsync(string userName, string password);
+        Task<RefreshTokenResponse> RefreshToken(string refreshToken);
     }
 }
