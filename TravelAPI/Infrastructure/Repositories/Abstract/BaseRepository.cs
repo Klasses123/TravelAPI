@@ -78,11 +78,11 @@ namespace TravelAPI.Infrastructure.Repositories.Abstract
             return query.Where(predicate);
         }
 
-        public async Task<IQueryable<T>> GetWithIncludeAsync(
+        public Task<IQueryable<T>> GetWithIncludeAsync(
             Expression<Func<T, bool>> predicate,
             params Expression<Func<T, object>>[] includeProperties)
         {
-            return await Task.Run(() => GetWithInclude(predicate, includeProperties));
+            return Task.FromResult(GetWithInclude(predicate, includeProperties));
         }
 
         protected virtual IQueryable<T> Include(params Expression<Func<T, object>>[] includeProperties)

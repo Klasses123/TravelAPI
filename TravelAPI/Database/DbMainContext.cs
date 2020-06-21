@@ -16,8 +16,8 @@ namespace TravelAPI.Database
 
         private void Initialize()
         {
-            ChangeTracker.AutoDetectChangesEnabled = false;                             // manual changes tracking, increasing working speed 4x times
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;     // Equivalent of .AsNoTracking() for each select query
+            //ChangeTracker.AutoDetectChangesEnabled = false;                             // manual changes tracking, increasing working speed 4x times
+            //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;     // Equivalent of .AsNoTracking() for each select query
             Database.AutoTransactionsEnabled = true;                                    // Required for "Unit of work pattern"
         }
 

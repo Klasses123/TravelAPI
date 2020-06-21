@@ -16,11 +16,13 @@ namespace TravelAPI.Controllers
     {
         private IMapper Mapper { get; }
         private ICompanyService CompanyService { get; }
+        private IUserService<User> UserService { get; }
         
-        public CompanyController(IMapper mapper, ICompanyService companyService)
+        public CompanyController(IMapper mapper, ICompanyService companyService, IUserService<User> userService)
         {
             Mapper = mapper;
             CompanyService = companyService;
+            UserService = userService;
         }
 
         [HttpPost("create")]
@@ -29,10 +31,12 @@ namespace TravelAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            var companyToCreate = Mapper.Map<Company>(request);
+            companyToCreate.Owner = new User { UserName = request.OwnerName };
+
             return new JsonResult(
                 Mapper.Map<CompanyViewModel>(
-                    await CompanyService.CreateCompanyAsync(
-                        Mapper.Map<Company>(request))));
+                    await CompanyService.CreateCompanyAsync(companyToCreate)));
         }
 
         [HttpGet("{id}")]

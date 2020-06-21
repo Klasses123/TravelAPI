@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using TravelAPI.Common.Exceptions.ClientExceptions;
 using TravelAPI.Core.Models;
@@ -10,14 +11,21 @@ namespace TravelAPI.Services.Realizations
     public class CompanyService : ICompanyService
     {
         private IBaseRepository<Company> CompanyRepository { get; }
-        public CompanyService(IBaseRepository<Company> companyRepo)
+        private IBaseRepository<User> UserRepository { get; }
+        public CompanyService(IBaseRepository<Company> companyRepo, IBaseRepository<User> userRepository)
         {
             CompanyRepository = companyRepo;
+            UserRepository = userRepository;
         }
         public async Task<Company> CreateCompanyAsync(Company company)
         {
             company.CreatedOn = DateTime.Now;
-            return await CompanyRepository.CreateAsync(company);
+            company.Owner = (await UserRepository.GetAllAsync(
+                u => u.UserName == company.Owner.UserName)).FirstOrDefault();
+
+            var newCompany = await CompanyRepository.CreateAsync(company);
+            await CompanyRepository.SaveAsync();
+            return newCompany;
         }
 
         public async Task<bool> DeleteCompanyAsync(Guid id)

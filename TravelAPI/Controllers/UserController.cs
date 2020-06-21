@@ -46,6 +46,15 @@ namespace TravelAPI.Controllers
                     await UserService.GetUserAsync(id)));
         }
 
+        [HttpGet("getByUserName/{userName}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult<string>> GetByUserName(string userName)
+        {
+            return new JsonResult(
+                Mapper.Map<UserViewModel>(
+                    await UserService.GetUserByUserNameAsync(userName)));
+        }
+
         [HttpDelete("delete/{id}")]
         public async Task<ActionResult<string>> Delete(string id)
         {

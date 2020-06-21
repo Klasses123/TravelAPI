@@ -23,17 +23,17 @@ namespace TravelAPI.Infrastructure.Repositories
 
         public override IQueryable<TEntity> GetAll()
         {
-            return DbEntities.AsNoTracking();
+            return DbEntities.AsTracking();
         }
 
         public override IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
         {
-            return DbEntities.Where(predicate).AsNoTracking();
+            return DbEntities.Where(predicate).AsTracking();
         }
 
-        public async override Task<IQueryable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
+        public override Task<IQueryable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await Task.Run(() => GetAll(predicate));
+            return Task.FromResult(GetAll(predicate));
         }
 
         public override TEntity GetById(Guid id)
@@ -97,17 +97,17 @@ namespace TravelAPI.Infrastructure.Repositories
 
         public async override Task DeleteAsync(Guid id)
         {
-            await Task.Run(() => Delete(id));
+            await Task.FromResult(Delete(id));
         }
 
-        public async override Task DeleteAsync(TEntity item)
+        public override Task DeleteAsync(TEntity item)
         {
-            await Task.Run(() => DeleteAsync(item));
+            return Task.Run(() => Delete(item));
         }
 
-        public async override Task<TEntity> UpdateAsync(TEntity item)
+        public override Task<TEntity> UpdateAsync(TEntity item)
         {
-            return await Task.Run(() => Update(item));
+            return Task.FromResult(Update(item));
         }
     }
 }

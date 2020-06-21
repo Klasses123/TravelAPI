@@ -122,13 +122,12 @@ namespace TravelAPI.Services.Realizations
 
         public async Task<User> GetUserByUserNameAsync(string userName)
         {
-            //TODO: мб дописать отдельный метод для этого момента
-            var user = await Task.Run(
-                () => UserRepository.GetWithInclude(
+            var user = 
+                (await UserRepository.GetWithIncludeAsync(
                     u => u.UserName == userName, 
                     u => u.Roles, 
-                    u => u.Company)
-                .FirstOrDefault());
+                    u => u.Company))
+                .FirstOrDefault();
 
             if (user == null)
                 throw new NotFoundException("Пользователь с таким логином не найден!");

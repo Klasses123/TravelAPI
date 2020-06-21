@@ -98,5 +98,6 @@ namespace TravelAPI.Services.Interfaces
         Task<TUser> UpdateNameAsync(UpdateNameRequest request);
         Task<SignInResponse> SignInAsync(string userName, string password);
         Task<RefreshTokenResponse> RefreshToken(string refreshToken);
+        Task<TUser> GetUserByUserNameAsync(string userName);
     }
 }

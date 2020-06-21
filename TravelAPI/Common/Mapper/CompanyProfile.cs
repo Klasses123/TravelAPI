@@ -14,7 +14,6 @@ namespace TravelAPI.Common.Mapper
                 .ForMember(set => set.CreatedOn, opt => opt.MapFrom(src => src.CreatedOn))
                 .ForMember(set => set.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(set => set.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
-                .ForMember(set => set.Owner, opt => opt.MapFrom(src => src.Owner))
                 .IncludeAllDerived();
 
             CreateMap<Company, CompanyViewModel>()
