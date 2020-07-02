@@ -171,7 +171,7 @@ namespace TravelAPI.Services.Realizations
                 User = Mapper.Map<UserViewModel>(user)
             };
             user.RefreshToken = response.RefreshToken;
-            await SaveRefreshTokenAsync();
+            await UpdateRefreshTokenAsync(user);
 
             return response;
         }
@@ -194,9 +194,9 @@ namespace TravelAPI.Services.Realizations
             return claimsIdentity;
         }
 
-        private async Task SaveRefreshTokenAsync()
+        private async Task UpdateRefreshTokenAsync(User user)
         {
-            await UserRepository.SaveAsync();
+            await UserRepository.UpdateAsync(user);
         }
     }
 }

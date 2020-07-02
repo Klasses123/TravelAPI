@@ -91,7 +91,7 @@ namespace TravelAPI.Infrastructure.Repositories.Abstract
 
         protected virtual IQueryable<T> Include(params Expression<Func<T, object>>[] includeProperties)
         {
-            IQueryable<T> query = DbEntities.AsNoTracking();
+            IQueryable<T> query = DbEntities;
             return includeProperties
                 .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
         }
