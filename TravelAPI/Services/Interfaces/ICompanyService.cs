@@ -12,6 +12,6 @@ namespace TravelAPI.Services.Interfaces
         Task<Company> GetCompanyByIdAsync(Guid id);
         Task<bool> DeleteCompanyAsync(Guid id);
         Task<Company> UpdateCompanyAsync(Company company);
-
+        Task<Company> GetCompanyByName(string name);
     }
 }

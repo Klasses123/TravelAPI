@@ -12,6 +12,8 @@ namespace TravelAPI.Services.Realizations
     {
         private IBaseRepository<Company> CompanyRepository { get; }
         private IBaseRepository<User> UserRepository { get; }
+
+        private readonly string _companyNotFound = "Компания не найдена!";
         public CompanyService(IBaseRepository<Company> companyRepo, IBaseRepository<User> userRepository)
         {
             CompanyRepository = companyRepo;
@@ -34,7 +36,7 @@ namespace TravelAPI.Services.Realizations
         {
             var companyToDelete = await CompanyRepository.GetByIdAsync(id);
             if (companyToDelete == null)
-                throw new NotFoundException("Компания не найдена!");
+                throw new NotFoundException(_companyNotFound);
 
             await CompanyRepository.DeleteAsync(companyToDelete);
             return true;
@@ -44,7 +46,16 @@ namespace TravelAPI.Services.Realizations
         {
             var company = await CompanyRepository.GetByIdAsync(id);
             if (company == null)
-                throw new NotFoundException("Компания не найдена!");
+                throw new NotFoundException(_companyNotFound);
+
+            return company;
+        }
+
+        public async Task<Company> GetCompanyByName(string name)
+        {
+            var company = await CompanyRepository.GetFirstWhereAsync(c => c.Name == name);
+            if (company == null)
+                throw new NotFoundException(_companyNotFound);
 
             return company;
         }

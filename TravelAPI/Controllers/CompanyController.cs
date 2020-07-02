@@ -39,6 +39,15 @@ namespace TravelAPI.Controllers
                     await CompanyService.CreateCompanyAsync(companyToCreate)));
         }
 
+        [HttpGet("getByName/{name}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult<string>> GetByName(string name)
+        {
+            return new JsonResult(
+                Mapper.Map<CompanyViewModel>(
+                    await CompanyService.GetCompanyByName(name)));
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<string>> Get(Guid id)
         {
