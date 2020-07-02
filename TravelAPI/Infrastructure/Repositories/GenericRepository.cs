@@ -23,12 +23,12 @@ namespace TravelAPI.Infrastructure.Repositories
 
         public override IQueryable<TEntity> GetAll()
         {
-            return DbEntities.AsTracking();
+            return DbEntities.AsNoTracking();
         }
 
         public override IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
         {
-            return DbEntities.Where(predicate).AsTracking();
+            return DbEntities.Where(predicate).AsNoTracking();
         }
 
         public override Task<IQueryable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
@@ -44,6 +44,16 @@ namespace TravelAPI.Infrastructure.Repositories
         public override TEntity GetById(string id)
         {
             return DbEntities.Find(id);
+        }
+
+        public override TEntity GetFirstWhere(Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbEntities.FirstOrDefault(predicate);
+        }
+
+        public override Task<TEntity> GetFirstWhereAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Task.FromResult(GetFirstWhere(predicate));
         }
 
         public override async Task<TEntity> GetByIdAsync(Guid id)
@@ -76,9 +86,10 @@ namespace TravelAPI.Infrastructure.Repositories
 
         public override TEntity Update(TEntity item)
         {
-            var updatedItem = DbEntities.Update(item);
+            Context.Update(item);
+            //DbEntities.Update(item);
             Context.SaveChanges();
-            return updatedItem.Entity;
+            return item;
         }
 
         public override bool Delete(Guid id)

@@ -20,11 +20,13 @@ namespace TravelAPI.Services.Realizations
         public async Task<Company> CreateCompanyAsync(Company company)
         {
             company.CreatedOn = DateTime.Now;
-            company.Owner = (await UserRepository.GetAllAsync(
-                u => u.UserName == company.Owner.UserName)).FirstOrDefault();
+            company.Owner = await UserRepository.GetFirstWhereAsync(
+                u => u.UserName == company.Owner.UserName);
 
             var newCompany = await CompanyRepository.CreateAsync(company);
             await CompanyRepository.SaveAsync();
+            await UserRepository.UpdateAsync(newCompany.Owner);
+            await UserRepository.SaveAsync();
             return newCompany;
         }
 

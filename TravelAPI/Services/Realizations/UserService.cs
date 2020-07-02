@@ -69,7 +69,7 @@ namespace TravelAPI.Services.Realizations
 
         public async Task<RegisterUserResponse> RegisterAsync(User user, string password)
         {
-            var u = UserRepository.GetAll(u => u.UserName == user.UserName).FirstOrDefault();
+            var u = await UserRepository.GetFirstWhereAsync(u => u.UserName == user.UserName);
             if (u != null)
                 throw new AlreadyExistsException("Пользователь", "логином");
 
@@ -139,7 +139,7 @@ namespace TravelAPI.Services.Realizations
         {
             var result = await SignInManager.PasswordSignInAsync(userName, password, true, true);
             var user = await GetUserByUserNameAsync(userName);
-
+            
             if (!result.Succeeded || user == null)
                 throw new SignInException();
 
@@ -148,7 +148,7 @@ namespace TravelAPI.Services.Realizations
 
         public async Task<RefreshTokenResponse> RefreshToken(string refreshToken)
         {
-            var user = UserRepository.GetAll(u => u.RefreshToken == refreshToken).FirstOrDefault();
+            var user = await UserRepository.GetFirstWhereAsync(u => u.RefreshToken == refreshToken);
             if (user == null)
                 throw new NotFoundException("Пользователь не найден! Попробуйте перезайти в учетную запись!");
 
@@ -171,7 +171,7 @@ namespace TravelAPI.Services.Realizations
                 User = Mapper.Map<UserViewModel>(user)
             };
             user.RefreshToken = response.RefreshToken;
-            await UpdateRefreshTokenAsync(user);
+            await SaveRefreshTokenAsync();
 
             return response;
         }
@@ -194,9 +194,9 @@ namespace TravelAPI.Services.Realizations
             return claimsIdentity;
         }
 
-        private async Task UpdateRefreshTokenAsync(User user)
+        private async Task SaveRefreshTokenAsync()
         {
-            await UserRepository.UpdateAsync(user);
+            await UserRepository.SaveAsync();
         }
     }
 }

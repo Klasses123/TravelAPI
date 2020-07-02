@@ -10,6 +10,8 @@ namespace TravelAPI.Infrastructure.Interfaces
     {
         IQueryable<T> GetAll();
         IQueryable<T> GetAll(Expression<Func<T, bool>> predicate);
+        T GetFirstWhere(Expression<Func<T, bool>> predicate);
+        Task<T> GetFirstWhereAsync(Expression<Func<T, bool>> predicate);
         T GetById(Guid id);
         T GetById(string id);
         Task<T> GetByIdAsync(Guid id);

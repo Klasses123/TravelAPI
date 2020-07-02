@@ -54,6 +54,10 @@ namespace TravelAPI.Infrastructure.Repositories.Abstract
             _disposed = true;
         }
 
+        public abstract T GetFirstWhere(Expression<Func<T, bool>> predicate);
+
+        public abstract Task<T> GetFirstWhereAsync(Expression<Func<T, bool>> predicate);
+
         public abstract T GetById(Guid id);
 
         public abstract T GetById(string id);

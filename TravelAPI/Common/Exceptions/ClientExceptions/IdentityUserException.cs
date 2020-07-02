@@ -25,7 +25,8 @@ namespace TravelAPI.Common.Exceptions.ClientExceptions
             var result = string.Join(", ", errors.Select(e => e.Code));
             return result
                 .Replace("DuplicateUserName", "Имя пользователя уже занято")
-                .Replace("InvalidUserName", "Недопустимый логин");
+                .Replace("InvalidUserName", "Недопустимый логин")
+                .Replace("DuplicateEmail", "Такой E-mail уже занят");
         }
     }
 }
