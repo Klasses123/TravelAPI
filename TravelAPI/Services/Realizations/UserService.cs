@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -160,6 +161,18 @@ namespace TravelAPI.Services.Realizations
             };
         }
 
+        public Task<bool> CanCreateTravel(string userName)
+        {
+            var user = UserRepository.GetAll(u => u.UserName == userName)
+                .Include(u => u.Roles)
+                    .ThenInclude(r => r.CompanyRole)
+                .FirstOrDefault();
+
+            return Task.FromResult(user.Roles.Any(r => r.CompanyRole.CanCreateTravel));
+        }
+
+
+        //private methods zone
         private async Task<SignInResponse> GenerateToken(User user)
         {
             var claims = GetIdentity(user);

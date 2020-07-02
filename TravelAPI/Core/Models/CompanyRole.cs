@@ -18,7 +18,30 @@ namespace TravelAPI.Core.Models
         public string Name { get; set; }
         public bool CanAddPeoples { get; set; }
         public bool CanBeDeleted { get; set; }
+        public bool CanCreateTravel { get; set; }
         public Company Company { get; set; }
         public virtual ICollection<UserCompanyRole> Users { get; set; }
+
+        public static CompanyRole GetDefaultCompanyOwnerRole()
+        {
+            return new CompanyRole
+            {
+                Name = OwnerRoleName,
+                CanAddPeoples = true,
+                CanBeDeleted = false,
+                CanCreateTravel = true
+            };
+        }
+
+        public static CompanyRole GetDefaultCompanyAdminRole()
+        {
+            return new CompanyRole
+            {
+                Name = AdminRoleName,
+                CanAddPeoples = true,
+                CanBeDeleted = false,
+                CanCreateTravel = true
+            };
+        }
     }
 }

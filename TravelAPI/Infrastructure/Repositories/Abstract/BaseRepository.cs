@@ -36,6 +36,10 @@ namespace TravelAPI.Infrastructure.Repositories.Abstract
 
         public abstract Task DeleteAsync(T item);
 
+        public abstract void DeleteRange(IEnumerable<T> range);
+
+        public abstract Task DeleteRangeAsync(IEnumerable<T> range);
+
         public void Dispose()
         {
             Dispose(true);

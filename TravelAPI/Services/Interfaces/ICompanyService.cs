@@ -10,7 +10,7 @@ namespace TravelAPI.Services.Interfaces
     {
         Task<Company> CreateCompanyAsync(Company company);
         Task<Company> GetCompanyByIdAsync(Guid id);
-        Task<bool> DeleteCompanyAsync(Guid id);
+        Task<bool> DeleteCompanyAsync(string name);
         Task<Company> UpdateCompanyAsync(Company company);
         Task<Company> GetCompanyByName(string name);
     }

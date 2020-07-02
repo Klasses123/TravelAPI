@@ -56,12 +56,12 @@ namespace TravelAPI.Controllers
                     await CompanyService.GetCompanyByIdAsync(id)));
         }
 
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("delete/{name}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult<string>> Delete(Guid id)
+        public async Task<ActionResult<string>> Delete(string name)
         {
             return new JsonResult(
-                await CompanyService.DeleteCompanyAsync(id));
+                await CompanyService.DeleteCompanyAsync(name));
         }
 
         [HttpPost("update")]

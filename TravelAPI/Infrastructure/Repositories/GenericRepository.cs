@@ -119,5 +119,16 @@ namespace TravelAPI.Infrastructure.Repositories
         {
             return Task.FromResult(Update(item));
         }
+
+        public override void DeleteRange(IEnumerable<TEntity> range)
+        {
+            DbEntities.RemoveRange(range);
+        }
+
+        public override Task DeleteRangeAsync(IEnumerable<TEntity> range)
+        {
+            DeleteRange(range);
+            return Task.CompletedTask;
+        }
     }
 }

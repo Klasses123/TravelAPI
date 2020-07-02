@@ -98,5 +98,22 @@ namespace TravelAPI.Controllers
                 Mapper.Map<UserViewModel>(
                     await UserService.UpdateNameAsync(request)));
         }
+
+        [HttpGet("canCreateTravel")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult<string>> CanCreateTravel()
+        {
+            return new JsonResult(
+                await UserService.CanCreateTravel(User.Identity.Name));
+        }
+
+        [HttpGet("isOwner")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult<string>> IsOwner()
+        {
+            var u = User.Claims;
+            return new JsonResult(
+                User.IsInRole(CompanyRole.OwnerRoleName));
+        }
     }
 }

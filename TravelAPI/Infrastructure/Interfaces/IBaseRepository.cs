@@ -26,6 +26,8 @@ namespace TravelAPI.Infrastructure.Interfaces
         void Delete(T item);
         Task DeleteAsync(Guid id);
         Task DeleteAsync(T item);
+        void DeleteRange(IEnumerable<T> range);
+        Task DeleteRangeAsync(IEnumerable<T> range);
         void Save();
         Task SaveAsync();
         IQueryable<T> GetWithInclude(params Expression<Func<T, object>>[] includeProperties);

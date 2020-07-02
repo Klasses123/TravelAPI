@@ -19,6 +19,7 @@ namespace TravelAPI.Core.Models
         public string PhoneNumber { get; set; }
         public virtual ICollection<User> CompanyUsers { get; set; }
         public virtual ICollection<Travel> Travels { get; set; }
+        public virtual ICollection<CompanyRole> CompanyRoles { get; set; }
 
         public override string ToString()
         {
