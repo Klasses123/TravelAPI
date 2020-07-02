@@ -99,6 +99,5 @@ namespace TravelAPI.Services.Interfaces
         Task<SignInResponse> SignInAsync(string userName, string password);
         Task<RefreshTokenResponse> RefreshToken(string refreshToken);
         Task<TUser> GetUserByUserNameAsync(string userName);
-        Task<bool> CanCreateTravel(string userName);
     }
 }

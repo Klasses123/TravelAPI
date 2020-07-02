@@ -54,6 +54,7 @@ namespace TravelAPI
             services.AddScoped<IUserService<User>, UserService>();
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<ITravelService, TravelService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             services.AddAutoMapper(typeof(Startup));
 

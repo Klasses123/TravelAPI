@@ -17,11 +17,15 @@ namespace TravelAPI.Controllers
     {
         private IUserService<User> UserService { get; }
         private IMapper Mapper { get; }
+        private IRoleService RoleService { get; }
 
-        public UserController(IUserService<User> userService, IMapper mapper)
+        public UserController(IUserService<User> userService, 
+            IMapper mapper,
+            IRoleService roleService)
         {
             UserService = userService;
             Mapper = mapper;
+            RoleService = roleService;
         }
 
         [HttpPost("create")]
@@ -39,6 +43,7 @@ namespace TravelAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<string>> Get(string id)
         {
             return new JsonResult(
@@ -104,16 +109,15 @@ namespace TravelAPI.Controllers
         public async Task<ActionResult<string>> CanCreateTravel()
         {
             return new JsonResult(
-                await UserService.CanCreateTravel(User.Identity.Name));
+                await RoleService.CanCreateTravel(User.Identity.Name));
         }
 
         [HttpGet("isOwner")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<string>> IsOwner()
         {
-            var u = User.Claims;
             return new JsonResult(
-                User.IsInRole(CompanyRole.OwnerRoleName));
+                await RoleService.IsOwner(User.Identity.Name));
         }
     }
 }

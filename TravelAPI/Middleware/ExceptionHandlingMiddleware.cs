@@ -112,6 +112,14 @@ namespace TravelAPI.Middleware
                     },
                     StatusCode = 400
                 },
+                AccessException accessExc => new HttpErrorModel
+                {
+                    Details = new HttpErrorModel.ErrorDetails
+                    {
+                        Text = accessExc.Message
+                    },
+                    StatusCode = 403
+                },
                 _ => new HttpErrorModel
                 {
                     Details = new HttpErrorModel.ErrorDetails
