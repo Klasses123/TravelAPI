@@ -24,6 +24,7 @@ namespace TravelAPI.Services.Realizations
             company.CreatedOn = DateTime.Now;
             company.Owner = await UserRepository.GetFirstWhereAsync(
                 u => u.UserName == company.Owner.UserName);
+            company.Owner.Company = company;
 
             var newCompany = await CompanyRepository.CreateAsync(company);
             await CompanyRepository.SaveAsync();
