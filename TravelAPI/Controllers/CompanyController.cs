@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using TravelAPI.Common.Exceptions.ClientExceptions;
 using TravelAPI.Core.Models;
 using TravelAPI.Services.Interfaces;
 using TravelAPI.ViewModels;
@@ -60,6 +61,9 @@ namespace TravelAPI.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<string>> Delete(string name)
         {
+            if (!User.HasClaim(c => c.Value.Contains("Owner")))
+                throw new AccessException("У Вас недостаточно прав!");
+
             return new JsonResult(
                 await CompanyService.DeleteCompanyAsync(name));
         }

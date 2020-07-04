@@ -139,7 +139,12 @@ namespace TravelAPI.Services.Realizations
         public async Task<SignInResponse> SignInAsync(string userName, string password)
         {
             var result = await SignInManager.PasswordSignInAsync(userName, password, true, true);
-            var user = await GetUserByUserNameAsync(userName);
+            var user = UserRepository.GetAll(u => u.UserName == userName)
+                .Include(u => u.Roles)
+                    .ThenInclude(r => r.CompanyRole)
+                .Include(u => u.Company)
+                .AsTracking()
+                .FirstOrDefault();
             
             if (!result.Succeeded || user == null)
                 throw new SignInException();
@@ -173,7 +178,7 @@ namespace TravelAPI.Services.Realizations
                 User = Mapper.Map<UserViewModel>(user)
             };
             user.RefreshToken = response.RefreshToken;
-            await UpdateRefreshTokenAsync(user);
+            await UserRepository.SaveAsync();
 
             return response;
         }
@@ -194,11 +199,6 @@ namespace TravelAPI.Services.Realizations
                        ClaimsIdentity.DefaultRoleClaimType);
 
             return claimsIdentity;
-        }
-
-        private async Task UpdateRefreshTokenAsync(User user)
-        {
-            await UserRepository.UpdateAsync(user);
         }
     }
 }

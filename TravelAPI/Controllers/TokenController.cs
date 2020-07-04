@@ -29,7 +29,7 @@ namespace TravelAPI.Controllers
             return new JsonResult(await UserService.SignInAsync(request.UserName, request.Password));
         }
 
-        [HttpGet("Refresh/{refreshToken}")]
+        [HttpGet("refresh/{refreshToken}")]
         public async Task<ActionResult<string>> RefreshToken(string refreshToken)
         {
             return new JsonResult(await UserService.RefreshToken(refreshToken));

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Formatters.Xml;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,10 @@ namespace TravelAPI.Services.Realizations
         }
         public async Task<Company> CreateCompanyAsync(Company company)
         {
+            var exists = await CompanyRepository.GetFirstWhereAsync(c => c.Name == company.Name);
+            if (exists != null)
+                throw new AlreadyExistsException("Компания с таким названием уже существует!");
+
             company.CreatedOn = DateTime.Now;
             company.Owner = await UserRepository.GetFirstWhereAsync(
                 u => u.UserName == company.Owner.UserName);

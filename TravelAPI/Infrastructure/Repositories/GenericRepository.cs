@@ -86,7 +86,7 @@ namespace TravelAPI.Infrastructure.Repositories
 
         public override TEntity Update(TEntity item)
         {
-            Context.Entry(item).State = EntityState.Modified;
+            Context.Update(item);
             Context.SaveChanges();
             return item;
         }
