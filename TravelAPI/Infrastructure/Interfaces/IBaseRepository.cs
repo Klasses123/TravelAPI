@@ -30,9 +30,6 @@ namespace TravelAPI.Infrastructure.Interfaces
         Task DeleteRangeAsync(IEnumerable<T> range);
         void Save();
         Task SaveAsync();
-        IQueryable<T> GetWithInclude(params Expression<Func<T, object>>[] includeProperties);
-        IQueryable<T> GetWithInclude(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
-        Task<IQueryable<T>> GetWithIncludeAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
         Task<IQueryable<T>> GetAllAsync(Expression<Func<T, bool>> predicate);
     }
 }

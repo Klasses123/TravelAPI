@@ -75,31 +75,6 @@ namespace TravelAPI.Infrastructure.Repositories.Abstract
         public abstract IQueryable<T> GetAll();
         public abstract Task<IQueryable<T>> GetAllAsync(Expression<Func<T, bool>> predicate);
 
-        public IQueryable<T> GetWithInclude(params Expression<Func<T, object>>[] includeProperties)
-        {
-            return Include(includeProperties);
-        }
-
-        public IQueryable<T> GetWithInclude(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
-        {
-            var query = Include(includeProperties);
-            return query.Where(predicate);
-        }
-
-        public Task<IQueryable<T>> GetWithIncludeAsync(
-            Expression<Func<T, bool>> predicate,
-            params Expression<Func<T, object>>[] includeProperties)
-        {
-            return Task.FromResult(GetWithInclude(predicate, includeProperties));
-        }
-
-        protected virtual IQueryable<T> Include(params Expression<Func<T, object>>[] includeProperties)
-        {
-            IQueryable<T> query = DbEntities;
-            return includeProperties
-                .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
-        }
-
         public virtual void Save()
         {
             DbMainContext.SaveChanges();

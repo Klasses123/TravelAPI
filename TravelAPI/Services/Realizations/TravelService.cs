@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,17 +42,17 @@ namespace TravelAPI.Services.Realizations
             return await TravelRepository.CreateAsync(travel);
         }
 
-        public async Task<Travel> GetTravelByIdAsync(Guid id)
+        public Task<Travel> GetTravelByIdAsync(Guid id)
         {
-            var requestedTravel = (await TravelRepository.GetWithIncludeAsync(
-                t => t.Id == id, 
-                t => t.Region, 
-                t => t.CompanyOrganizer)).FirstOrDefault();
+            var requestedTravel = TravelRepository.GetAll(
+                    t => t.Id == id) 
+                .Include(t => t.Region)
+                .Include(t => t.CompanyOrganizer).FirstOrDefault();
 
             if (requestedTravel == null)
                 throw new NotFoundException("Путешествие не найдено!");
 
-            return requestedTravel;
+            return Task.FromResult(requestedTravel);
         }
 
         public async Task<Travel> UpdateTravel(Travel travel)

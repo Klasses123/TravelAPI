@@ -121,19 +121,18 @@ namespace TravelAPI.Services.Realizations
             return await UserRepository.UpdateAsync(user);
         }
 
-        public async Task<User> GetUserByUserNameAsync(string userName)
+        public Task<User> GetUserByUserNameAsync(string userName)
         {
-            var user = 
-                (await UserRepository.GetWithIncludeAsync(
-                    u => u.UserName == userName, 
-                    u => u.Roles, 
-                    u => u.Company))
+            var user = UserRepository.GetAll(
+                    u => u.UserName == userName) 
+                .Include(u => u.Roles) 
+                .Include(u => u.Company)
                 .FirstOrDefault();
 
             if (user == null)
                 throw new NotFoundException("Пользователь с таким логином не найден!");
 
-            return user;
+            return Task.FromResult(user);
         }
 
         public async Task<SignInResponse> SignInAsync(string userName, string password)
