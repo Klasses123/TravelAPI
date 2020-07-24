@@ -47,7 +47,9 @@ namespace TravelAPI.Services.Realizations
             var requestedTravel = TravelRepository.GetAll(
                     t => t.Id == id) 
                 .Include(t => t.Region)
-                .Include(t => t.CompanyOrganizer).FirstOrDefault();
+                .Include(t => t.CompanyOrganizer)
+                .AsTracking()
+                .FirstOrDefault();
 
             if (requestedTravel == null)
                 throw new NotFoundException("Путешествие не найдено!");

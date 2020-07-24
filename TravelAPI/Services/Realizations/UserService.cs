@@ -127,6 +127,7 @@ namespace TravelAPI.Services.Realizations
                     u => u.UserName == userName) 
                 .Include(u => u.Roles) 
                 .Include(u => u.Company)
+                .AsTracking()
                 .FirstOrDefault();
 
             if (user == null)
