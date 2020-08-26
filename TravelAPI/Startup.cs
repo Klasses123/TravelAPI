@@ -131,7 +131,6 @@ namespace TravelAPI
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IUrlHelper>(serviceProvider =>
             {
                 var actionContext = serviceProvider.GetRequiredService<IActionContextAccessor>().ActionContext;
